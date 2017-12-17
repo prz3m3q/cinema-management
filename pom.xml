@@ -68,19 +68,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- #2 - Vaadin for Spring Boot -->
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-spring-boot-starter</artifactId>
-        </dependency>
-
-        <!-- #3 - NumberField for salaries -->
-        <dependency>
-            <groupId>org.vaadin.ui</groupId>
-            <artifactId>numberfield</artifactId>
-            <version>0.2.0</version>
-        </dependency>
-
+        
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
