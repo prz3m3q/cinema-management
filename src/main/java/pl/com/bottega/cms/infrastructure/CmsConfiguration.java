@@ -1,4 +1,4 @@
-package pl.com.bottega.cms.intrastructure;
+package pl.com.bottega.cms.infrastructure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
