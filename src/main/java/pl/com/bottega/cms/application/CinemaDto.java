@@ -1,27 +1,19 @@
-package pl.com.bottega.cms.model;
+package pl.com.bottega.cms.application;
 
-import pl.com.bottega.cms.model.commands.CreateCinemaCommand;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
+import pl.com.bottega.cms.model.Cinema;
 
-@Entity
-public class Cinema {
-    public Cinema(){}
+public class CinemaDto {
 
-    @Id
-    @GeneratedValue
     private Long id;
-
     private String name;
-
     private String city;
 
-    public Cinema(CreateCinemaCommand cmd) {
-        this.name=cmd.getName();
-        this.city=cmd.getCity();
+    public CinemaDto(Long id, String name, String city) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
     }
 
     public Long getId() {
