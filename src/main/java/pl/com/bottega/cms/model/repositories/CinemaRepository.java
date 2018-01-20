@@ -5,6 +5,6 @@ import pl.com.bottega.cms.model.commands.CreateCinemaCommand;
 
 public interface CinemaRepository {
     void save(Cinema cinema);
-
     boolean isOccupied(CreateCinemaCommand cmd);
+    Cinema get(Long cinemaId);
 }

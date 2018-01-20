@@ -2,6 +2,7 @@ package pl.com.bottega.cms.infrastructure;
 
 import org.springframework.stereotype.Component;
 import pl.com.bottega.cms.model.Cinema;
+import pl.com.bottega.cms.model.Movie;
 import pl.com.bottega.cms.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cms.model.repositories.CinemaRepository;
 
@@ -25,6 +26,15 @@ public class JPACinameRepository implements CinemaRepository {
     @Override
     public boolean isOccupied(CreateCinemaCommand cmd) {
         return getCinema(cmd).isPresent();
+    }
+
+    @Override
+    public Cinema get(Long cinemaId) {
+        Cinema cinema = entityManager.find(Cinema.class, cinemaId);
+        if (cinema == null) {
+            throw new NoSuchEntityException();
+        }
+        return cinema;
     }
 
     private Optional<Cinema> getCinema(CreateCinemaCommand cmd) {

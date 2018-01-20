@@ -11,8 +11,7 @@ import pl.com.bottega.cms.model.commands.CommandInvalidException;
 @ControllerAdvice
 public class ErrorHandlers {
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND,
-            reason = "Entity with given id does not exist")
+    @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Entity with given id does not exist")
     @ExceptionHandler(NoSuchEntityException.class)
     public void handleEntityNotFound() {
 

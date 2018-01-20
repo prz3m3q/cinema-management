@@ -18,6 +18,17 @@ public interface Command {
         }
     }
 
+    default void validatePresence(ValidationErrors errors, String fieldOne, Object valueOne, String fieldTwo, Object valueTwo) {
+        if (valueOne == null && valueTwo == null) {
+            errors.add(fieldOne, "can't be blank");
+            errors.add(fieldTwo, "can't be blank");
+        }
+        if (valueOne != null && valueTwo != null) {
+            errors.add(fieldOne, "give only the one date period");
+            errors.add(fieldTwo, "give only the one date period");
+        }
+    }
+
     default void validateMinLength(ValidationErrors errors, String field, String value, int minLength) {
         if (value != null && value.length() < minLength) {
             errors.add(field, "min length is " + minLength);
