@@ -40,9 +40,7 @@ public class ShowFactory {
                 continue;
             }
             for (LocalTime time : cmd.getCalendar().getHours()) {
-                LocalDateTime showDateTime = LocalDateTime.now();
-                showDateTime = showDateTime.with(currentDate);
-                showDateTime = showDateTime.with(time);
+                LocalDateTime showDateTime = LocalDateTime.of(currentDate, time);
                 if (!showDateTime.isBefore(cmd.getCalendar().getFromDate()) && !showDateTime.isAfter(cmd.getCalendar().getUntilDate())) {
                     shows.add(new Show(cinema, movie, showDateTime));
                 }
