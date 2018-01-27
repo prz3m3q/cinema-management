@@ -1,12 +1,11 @@
 package pl.com.bottega.cms.ui;
 
 import org.springframework.web.bind.annotation.*;
-import pl.com.bottega.cms.application.CinemaDto;
-import pl.com.bottega.cms.application.CinemaFinder;
-import pl.com.bottega.cms.application.CommandGateway;
+import pl.com.bottega.cms.application.*;
 import pl.com.bottega.cms.model.commands.CreateCinemaCommand;
 import pl.com.bottega.cms.model.commands.CreateShowsCommand;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -15,10 +14,12 @@ public class CinemaController {
 
     private CommandGateway commandGateway;
     private CinemaFinder cinemaFinder;
+    private MovieFinder movieFinder;
 
-    public CinemaController(CommandGateway commandGateway, CinemaFinder cinemaFinder) {
+    public CinemaController(CommandGateway commandGateway, CinemaFinder cinemaFinder, MovieFinder movieFinder) {
         this.commandGateway = commandGateway;
         this.cinemaFinder = cinemaFinder;
+        this.movieFinder = movieFinder;
     }
 
     @PutMapping("/cinemas")
@@ -36,5 +37,10 @@ public class CinemaController {
     public void createShows(@PathVariable Long cinemaId, @RequestBody CreateShowsCommand cmd) {
         cmd.setCinemaId(cinemaId);
         commandGateway.execute(cmd);
+    }
+
+    @GetMapping("/cinemas/{cinemaId}/movies")
+    public List<MovieDto> findMovies(@PathVariable Long cinemaId, @RequestParam String date) {
+        return movieFinder.getMovies(cinemaId, LocalDate.parse(date));
     }
 }

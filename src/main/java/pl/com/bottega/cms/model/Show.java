@@ -28,4 +28,12 @@ public class Show {
         this.movie = movie;
         this.date = date;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
 }

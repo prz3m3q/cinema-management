@@ -22,9 +22,9 @@ public class CreateCinemaHandler implements Handler<CreateCinemaCommand>{
 
     @Transactional
     public void handle(CreateCinemaCommand cmd){
-     validateCinemaFree(cmd);
-     Cinema cinema = new Cinema(cmd);
-     cinemaRepository.save(cinema);
+         validateCinemaFree(cmd);
+         Cinema cinema = new Cinema(cmd);
+         cinemaRepository.save(cinema);
     }
 
     @Override
