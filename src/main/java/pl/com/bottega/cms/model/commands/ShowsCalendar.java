@@ -24,4 +24,8 @@ public class ShowsCalendar {
     public Set<LocalTime> getHours() {
         return hours;
     }
+
+    public boolean isWeekdaysContain(String dayOfWeekFromDate) {
+        return this.weekDays.stream().anyMatch(weekday -> weekday.toUpperCase().equals(dayOfWeekFromDate.toUpperCase()));
+    }
 }

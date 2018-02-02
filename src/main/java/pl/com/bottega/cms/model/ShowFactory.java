@@ -34,17 +34,19 @@ public class ShowFactory {
 
     private Collection<Show> createShowsWithCalendar(CreateShowsCommand cmd, Cinema cinema, Movie movie) {
         Collection<Show> shows = new ArrayList<>();
-        for (LocalDate currentDate = cmd.getCalendar().getFromDate().toLocalDate(); !currentDate.isAfter(cmd.getCalendar().getUntilDate().toLocalDate()); currentDate = currentDate.plusDays(1)) {
-            String dayOfWeekFromDate = currentDate.getDayOfWeek().name().toUpperCase();
-            if (!cmd.getCalendar().getWeekDays().stream().anyMatch(dayOfWeek -> dayOfWeek.toUpperCase().equals(dayOfWeekFromDate))) {
+        LocalDate iteratorDate = cmd.getFromDate();
+        while (!iteratorDate.isAfter(cmd.getUntilDate())) {
+            if (!cmd.calendarContainsDate(iteratorDate)) {
+                iteratorDate = iteratorDate.plusDays(1);
                 continue;
             }
-            for (LocalTime time : cmd.getCalendar().getHours()) {
-                LocalDateTime showDateTime = LocalDateTime.of(currentDate, time);
-                if (!showDateTime.isBefore(cmd.getCalendar().getFromDate()) && !showDateTime.isAfter(cmd.getCalendar().getUntilDate())) {
+            for (LocalTime time : cmd.getCalendarHours()) {
+                LocalDateTime showDateTime = LocalDateTime.of(iteratorDate, time);
+                if (cmd.calendarContainsDateTime(showDateTime)) {
                     shows.add(new Show(cinema, movie, showDateTime));
                 }
             }
+            iteratorDate = iteratorDate.plusDays(1);
         }
         return shows;
     }

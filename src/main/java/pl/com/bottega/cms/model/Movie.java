@@ -60,8 +60,8 @@ public class Movie {
         this.length = movie.getLength();
     }
 
-    public Movie removeShows(LocalDate date) {
-        this.shows.removeIf(show -> !show.getDate().toLocalDate().isEqual(date));
+    public Movie removeShowsWithoutDate(LocalDate date) {
+        this.shows.removeIf(show -> !show.isTakePlaceInDate(date));
         return this;
     }
 

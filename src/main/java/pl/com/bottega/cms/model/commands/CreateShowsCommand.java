@@ -1,6 +1,10 @@
 package pl.com.bottega.cms.model.commands;
 
+import org.apache.tomcat.jni.Local;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 public class CreateShowsCommand implements Command {
@@ -45,5 +49,37 @@ public class CreateShowsCommand implements Command {
         validatePresence(errors,"movieId", movieId);
         validatePresence(errors,"cinemaId", cinemaId);
         validatePresence(errors,"dates", dates, "calendar", calendar);
+    }
+
+    public LocalDate getFromDate() {
+        return this.getCalendar().getFromDate().toLocalDate();
+    }
+
+    public LocalDate getUntilDate() {
+        return this.getCalendar().getUntilDate().toLocalDate();
+    }
+
+    public boolean calendarContainsDate(LocalDate date) {
+        String dayOfWeekFromDate = date.getDayOfWeek().name();
+        return this.getCalendar().isWeekdaysContain(dayOfWeekFromDate);
+    }
+
+    public Set<LocalTime> getCalendarHours() {
+        return this.getCalendar().getHours();
+    }
+
+    public LocalDateTime getFromDateTime() {
+        return this.getCalendar().getFromDate();
+    }
+
+    public LocalDateTime getUntilDateTime() {
+        return this.getCalendar().getUntilDate();
+    }
+
+    public boolean calendarContainsDateTime(LocalDateTime showDateTime) {
+        if (!showDateTime.isBefore(getFromDateTime()) && !showDateTime.isAfter(getUntilDateTime())) {
+            return true;
+        }
+        return false;
     }
 }

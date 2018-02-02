@@ -1,6 +1,7 @@
 package pl.com.bottega.cms.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -35,5 +36,9 @@ public class Show {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public boolean isTakePlaceInDate(LocalDate date) {
+        return this.getDate().toLocalDate().equals(date);
     }
 }
