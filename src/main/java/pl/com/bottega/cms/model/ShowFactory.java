@@ -36,14 +36,12 @@ public class ShowFactory {
         Collection<Show> shows = new ArrayList<>();
         LocalDate iteratorDate = cmd.getFromDate();
         while (!iteratorDate.isAfter(cmd.getUntilDate())) {
-            if (!cmd.calendarContainsDate(iteratorDate)) {
-                iteratorDate = iteratorDate.plusDays(1);
-                continue;
-            }
-            for (LocalTime time : cmd.getCalendarHours()) {
-                LocalDateTime showDateTime = LocalDateTime.of(iteratorDate, time);
-                if (cmd.calendarContainsDateTime(showDateTime)) {
-                    shows.add(new Show(cinema, movie, showDateTime));
+            if (cmd.calendarContainsDate(iteratorDate)) {
+                for (LocalTime time : cmd.getCalendarHours()) {
+                    LocalDateTime showDateTime = LocalDateTime.of(iteratorDate, time);
+                    if (cmd.calendarContainsDateTime(showDateTime)) {
+                        shows.add(new Show(cinema, movie, showDateTime));
+                    }
                 }
             }
             iteratorDate = iteratorDate.plusDays(1);
