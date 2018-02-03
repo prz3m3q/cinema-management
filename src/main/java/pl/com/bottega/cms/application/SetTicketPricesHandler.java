@@ -24,15 +24,8 @@ public class SetTicketPricesHandler implements Handler<SetTicketPricesCommand>{
         movieRepository.save(movie);
     }
 
-
-
     @Override
     public Class<? extends Command> getSupportedCommandClass() {
         return SetTicketPricesCommand.class;
     }
-
-//    @Override
-//    public boolean canHandle(Command command) {
-//        return false;
-//    }
 }

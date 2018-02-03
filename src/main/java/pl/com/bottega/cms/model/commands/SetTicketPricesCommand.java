@@ -10,9 +10,6 @@ public class SetTicketPricesCommand implements Command {
 
 
     public void validate(ValidationErrors errors){
-//        validatePresence(errors, "prices", prices.isEmpty());
-//        validatePresence(errors, "movieId", movieId);
-
         for (Map.Entry<String,BigDecimal> entry : prices.entrySet()){
             if(entry.getValue().compareTo(BigDecimal.ZERO) == -1 )
             errors.add("prices", "Prices can not be under 0");
