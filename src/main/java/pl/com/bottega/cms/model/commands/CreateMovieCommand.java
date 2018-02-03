@@ -1,6 +1,8 @@
 package pl.com.bottega.cms.model.commands;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class CreateMovieCommand implements Command {
@@ -10,6 +12,7 @@ public class CreateMovieCommand implements Command {
     private Set<String> genres = new HashSet<>();
     private Integer minAge;
     private Integer length;
+    private Map<String,BigDecimal> prices;
 
     public void validate(ValidationErrors errors){
         validatePresence(errors,"title", title);
@@ -66,5 +69,9 @@ public class CreateMovieCommand implements Command {
 
     public void setLength(Integer length) {
         this.length = length;
+    }
+
+    public Map<String,BigDecimal> getPrices() {
+        return prices;
     }
 }
