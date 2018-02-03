@@ -1,4 +1,4 @@
-package acceptance;
+package pl.com.bottega.cms.acceptance;
 
 import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
