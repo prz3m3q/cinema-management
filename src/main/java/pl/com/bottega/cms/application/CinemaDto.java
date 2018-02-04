@@ -1,8 +1,8 @@
 package pl.com.bottega.cms.application;
 
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
-import pl.com.bottega.cms.model.Cinema;
+//import com.sun.xml.internal.ws.api.ha.StickyFeature;
+//import pl.com.bottega.cms.model.Cinema;
 
 public class CinemaDto {
 
