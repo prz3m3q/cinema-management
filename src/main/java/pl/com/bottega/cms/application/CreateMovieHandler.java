@@ -8,7 +8,7 @@ import pl.com.bottega.cms.model.commands.CreateMovieCommand;
 import pl.com.bottega.cms.model.repositories.MovieRepository;
 
 @Component
-public class CreateMovieHandler implements Handler<CreateMovieCommand> {
+public class CreateMovieHandler implements Handler<CreateMovieCommand, Void> {
 
     private MovieRepository movieRepository;
 
@@ -17,9 +17,10 @@ public class CreateMovieHandler implements Handler<CreateMovieCommand> {
     }
 
     @Transactional
-    public void handle(CreateMovieCommand command) {
+    public Void handle(CreateMovieCommand command) {
         Movie movie = new Movie(command);
         movieRepository.save(movie);
+        return null;
     }
 
     @Override

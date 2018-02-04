@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 
 @Component
 
-public class CreateCinemaHandler implements Handler<CreateCinemaCommand>{
+public class CreateCinemaHandler implements Handler<CreateCinemaCommand, Void>{
 
     private CinemaRepository cinemaRepository;
 
@@ -21,10 +21,11 @@ public class CreateCinemaHandler implements Handler<CreateCinemaCommand>{
     }
 
     @Transactional
-    public void handle(CreateCinemaCommand cmd){
+    public Void handle(CreateCinemaCommand cmd){
          validateCinemaFree(cmd);
          Cinema cinema = new Cinema(cmd);
          cinemaRepository.save(cinema);
+         return null;
     }
 
     @Override

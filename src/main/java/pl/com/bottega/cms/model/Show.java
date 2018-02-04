@@ -3,6 +3,8 @@ package pl.com.bottega.cms.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.LinkedList;
 
 @Entity
 @Table(name = "shows")
@@ -19,6 +21,10 @@ public class Show {
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
+    @OneToMany
+    @JoinColumn(name = "show_id")
+    private Collection<Reservation> reservations = new LinkedList<>();
 
     private LocalDateTime date;
 

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 
 @Component
-public class CreateShowsHandler implements Handler<CreateShowsCommand> {
+public class CreateShowsHandler implements Handler<CreateShowsCommand, Void> {
 
     private ShowRepository showRepository;
     private ShowFactory showFactory;
@@ -23,11 +23,12 @@ public class CreateShowsHandler implements Handler<CreateShowsCommand> {
     }
 
     @Transactional
-    public void handle(CreateShowsCommand command) {
+    public Void handle(CreateShowsCommand command) {
         Collection<Show> shows = showFactory.createShows(command);
         for (Show show : shows) {
             showRepository.save(show);
         }
+        return null;
     }
 
     @Override
