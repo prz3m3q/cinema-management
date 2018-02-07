@@ -1,6 +1,8 @@
 package pl.com.bottega.cms.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Map;
 
 @Entity
 public class Ticket {
@@ -41,5 +43,13 @@ public class Ticket {
 
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+    }
+
+    public BigDecimal getPrice(Map<String,BigDecimal> prices) {
+        return prices.get(this.kind).multiply(BigDecimal.valueOf(this.count));
+    }
+
+    public BigDecimal getUnitPrice(String kind, Map<String,BigDecimal> prices) {
+        return prices.get(kind);
     }
 }

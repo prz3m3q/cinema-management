@@ -53,5 +53,10 @@ public class CreateMovieTest extends AcceptanceTest {
 //        assertEquals(cinemas.get(0).getCity(), "Lublin");
 //        assertEquals(cinemas.get(0).getName(), "Bajka");
 //        assertEquals(cinemas.get(0).getId(), new Long(1));
+
+
+
+
+
     }
 }

@@ -1,5 +1,6 @@
 package pl.com.bottega.cms.model;
 
+import pl.com.bottega.cms.model.commands.CalculatePricesCommand;
 import pl.com.bottega.cms.model.commands.CreateMovieCommand;
 import pl.com.bottega.cms.model.commands.SetTicketPricesCommand;
 
@@ -83,6 +84,11 @@ public class Movie {
 
     public void setPrices(SetTicketPricesCommand cmd){
 
+    }
+
+    Receipt calculate(CalculatePricesCommand cmd){
+        TicketPrieces ticketPrieces = new TicketPrieces(cmd);
+        return ticketPrieces.calculate(prices);
     }
 
     public Movie() {}

@@ -1,5 +1,7 @@
 package pl.com.bottega.cms.model;
 
+import pl.com.bottega.cms.model.commands.CalculatePricesCommand;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,6 +36,10 @@ public class Show {
         this.cinema = cinema;
         this.movie = movie;
         this.date = date;
+    }
+
+    Receipt calculate(CalculatePricesCommand cmd){
+        return this.movie.calculate(cmd);
     }
 
     public Long getId() {

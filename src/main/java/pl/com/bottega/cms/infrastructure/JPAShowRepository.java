@@ -5,6 +5,8 @@ import pl.com.bottega.cms.model.Show;
 import pl.com.bottega.cms.model.repositories.ShowRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import java.util.Optional;
 
 @Component
 public class JPAShowRepository implements ShowRepository {
@@ -18,5 +20,17 @@ public class JPAShowRepository implements ShowRepository {
     @Override
     public void save(Show show) {
         entityManager.persist(show);
+    }
+
+    @Override
+    public Optional<Show> getShow(Long showId) {
+        try {
+            Show show= (Show) entityManager.createQuery("FROM Show s WHERE s.showId = :id")
+                    .setParameter( "id", showId).getSingleResult();
+            return Optional.of(show);
+        }
+        catch (NoResultException ex) {
+            return Optional.empty();
+        }
     }
 }

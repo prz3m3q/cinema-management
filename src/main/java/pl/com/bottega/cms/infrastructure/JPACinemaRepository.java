@@ -8,14 +8,16 @@ import pl.com.bottega.cms.model.repositories.CinemaRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.Optional;
 
 @Component
-public class JPACinameRepository implements CinemaRepository {
+public class JPACinemaRepository implements CinemaRepository {
 
+    @PersistenceContext
     private EntityManager entityManager;
 
-    public JPACinameRepository(EntityManager entityManager) {
+    public JPACinemaRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

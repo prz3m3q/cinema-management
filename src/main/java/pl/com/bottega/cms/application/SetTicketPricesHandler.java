@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 public class SetTicketPricesHandler implements Handler<SetTicketPricesCommand, Void> {
 
     private MovieRepository movieRepository;
+
     public SetTicketPricesHandler (MovieRepository movieRepository){
         this.movieRepository = movieRepository;
     }
