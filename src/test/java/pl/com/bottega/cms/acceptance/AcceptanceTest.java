@@ -19,7 +19,9 @@ public class AcceptanceTest {
     public void cleanUp() {
         tt.execute((c) -> {
             em.createNativeQuery("DELETE FROM cinema").executeUpdate();
+            em.createNativeQuery("TRUNCATE cinema").executeUpdate();
             em.createNativeQuery("DELETE FROM movie").executeUpdate();
+            em.createNativeQuery("TRUNCATE movie").executeUpdate();
             em.createNativeQuery("DELETE FROM movie_actors").executeUpdate();
             em.createNativeQuery("DELETE FROM movie_genres").executeUpdate();
             return null;
