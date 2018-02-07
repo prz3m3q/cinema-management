@@ -12,15 +12,15 @@ public class CreateMovieCommand implements Command {
     private Set<String> genres = new HashSet<>();
     private Integer minAge;
     private Integer length;
-    private Map<String,BigDecimal> prices;
+    private Map<String, BigDecimal> prices;
 
     public void validate(ValidationErrors errors){
         validatePresence(errors,"title", title);
         validatePresence(errors,"description", description);
         validatePresence(errors,"actors", actors);
         validatePresence(errors,"genres", genres);
-        validatePresence(errors,"minAge", minAge);
-        validatePresence(errors,"length", length);
+        validateNegativeNumber(errors,"minAge", minAge);
+        validateNegativeNumber(errors,"length", length);
     }
 
     public String getTitle() {

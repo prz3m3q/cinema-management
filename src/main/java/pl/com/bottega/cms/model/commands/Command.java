@@ -1,5 +1,9 @@
 package pl.com.bottega.cms.model.commands;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public interface Command {
 
     default void validate(ValidationErrors validationErrors) {
@@ -15,6 +19,24 @@ public interface Command {
     default void validatePresence(ValidationErrors errors, String field, Object value) {
         if (value == null) {
             errors.add(field, "can't be blank");
+        }
+    }
+
+    default void validateNegativeNumber(ValidationErrors errors, String field, Integer value) {
+        if (value == null) {
+            errors.add(field, "can't be blank");
+        }
+        if (value < 0) {
+            errors.add(field, "can't be negative");
+        }
+    }
+
+    default void validatePresence(ValidationErrors errors, String field, Set value) {
+        if (value.size() == 0) {
+            errors.add(field, "can't be empty");
+        }
+        if (value.stream().anyMatch(v -> v.toString().trim().length() == 0)) {
+            errors.add(field, "can't be empty values");
         }
     }
 

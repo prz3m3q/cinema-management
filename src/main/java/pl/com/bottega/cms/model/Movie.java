@@ -30,7 +30,9 @@ public class Movie {
 
     private Map<String,BigDecimal> prices;
 
-    @ElementCollection
+    @ElementCollection(
+        fetch = FetchType.EAGER
+    )
     @CollectionTable(
         name="movie_actors",
         joinColumns=@JoinColumn(name="movie_id")
@@ -38,7 +40,9 @@ public class Movie {
     @Column(name = "actors")
     private Set<String> actors = new HashSet<>();
 
-    @ElementCollection
+    @ElementCollection(
+        fetch = FetchType.EAGER
+    )
     @CollectionTable(
         name="movie_genres",
         joinColumns=@JoinColumn(name="movie_id")
@@ -64,7 +68,6 @@ public class Movie {
         this.genres = command.getGenres();
         this.minAge = command.getMinAge();
         this.length = command.getLength();
-
     }
 
     public Movie(Movie movie) {
@@ -74,7 +77,6 @@ public class Movie {
         this.genres = movie.getGenres();
         this.minAge = movie.getMinAge();
         this.length = movie.getLength();
-
     }
 
     public Movie removeShowsWithoutDate(LocalDate date) {
