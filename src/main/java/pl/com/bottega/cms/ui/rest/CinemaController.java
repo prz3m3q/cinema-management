@@ -40,7 +40,7 @@ public class CinemaController {
     }
 
     @GetMapping("/cinemas/{cinemaId}/movies")
-    public List<MovieDto> findMovies(@PathVariable Long cinemaId, @RequestParam String date) {
-        return movieFinder.getMovies(cinemaId, LocalDate.parse(date));
+    public List<MovieDto> findMovies(@PathVariable Long cinemaId, @RequestParam LocalDate date) {
+        return movieFinder.getMovies(cinemaId, date);
     }
 }

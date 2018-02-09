@@ -1,5 +1,6 @@
 package pl.com.bottega.cms.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import pl.com.bottega.cms.model.commands.CalculatePricesCommand;
 
 import javax.persistence.*;

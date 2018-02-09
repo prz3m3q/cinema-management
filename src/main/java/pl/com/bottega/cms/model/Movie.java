@@ -20,12 +20,10 @@ public class Movie {
 
     private String description;
 
-
-
     @ElementCollection
     @CollectionTable(
-            name ="ticket_prices",
-            joinColumns =@JoinColumn(name="move_id")
+        name ="ticket_prices",
+        joinColumns =@JoinColumn(name="move_id")
     )
 
     private Map<String,BigDecimal> prices;
@@ -54,7 +52,6 @@ public class Movie {
     private Integer minAge;
 
     private Integer length;
-
 
     @OneToMany
     @JoinColumn(name = "movie_id")
