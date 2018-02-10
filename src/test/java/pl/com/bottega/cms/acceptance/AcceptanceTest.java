@@ -24,6 +24,8 @@ public class AcceptanceTest {
             em.createNativeQuery("TRUNCATE movie").executeUpdate();
             em.createNativeQuery("DELETE FROM movie_actors").executeUpdate();
             em.createNativeQuery("DELETE FROM movie_genres").executeUpdate();
+            em.createNativeQuery("DELETE FROM shows").executeUpdate();
+            em.createNativeQuery("TRUNCATE shows").executeUpdate();
             return null;
         });
     }

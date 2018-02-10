@@ -53,8 +53,9 @@ public class Movie {
 
     private Integer length;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "movie_id")
+    @OrderBy("date")
     private Collection<Show> shows = new LinkedList<>();
 
 

@@ -23,7 +23,7 @@ public class JPAMovieFinder implements MovieFinder {
 
     @Override
     public List<MovieDto> getMovies(long cinemaId, LocalDate date) {
-        List<Movie> results = entityManager.createQuery("SELECT m FROM Movie m JOIN Show s ON s.movie.id = m.id WHERE s.cinema.id = :cinema_id AND s.date BETWEEN :min_date AND :max_date")
+        List<Movie> results = entityManager.createQuery("SELECT DISTINCT m FROM Movie m JOIN Show s ON s.movie.id = m.id WHERE s.cinema.id = :cinema_id AND s.date BETWEEN :min_date AND :max_date")
             .setParameter("cinema_id", cinemaId)
             .setParameter("min_date", LocalDateTime.of(date, LocalTime.MIN))
             .setParameter("max_date", LocalDateTime.of(date, LocalTime.MAX))
