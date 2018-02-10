@@ -43,6 +43,10 @@ public class Show {
         return this.movie.calculate(cmd);
     }
 
+    public Movie getMovie() {
+        return movie;
+    }
+
     public Long getId() {
         return id;
     }

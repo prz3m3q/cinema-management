@@ -1,12 +1,12 @@
 package pl.com.bottega.cms.infrastructure;
 
+import javassist.NotFoundException;
 import org.springframework.stereotype.Component;
 import pl.com.bottega.cms.model.Show;
 import pl.com.bottega.cms.model.repositories.ShowRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import java.util.Optional;
 
 @Component
 public class JPAShowRepository implements ShowRepository {
@@ -23,14 +23,14 @@ public class JPAShowRepository implements ShowRepository {
     }
 
     @Override
-    public Optional<Show> getShow(Long showId) {
+    public Show getShow(Long showId) {
         try {
-            Show show= (Show) entityManager.createQuery("FROM Show s WHERE s.showId = :id")
-                    .setParameter( "id", showId).getSingleResult();
-            return Optional.of(show);
-        }
-        catch (NoResultException ex) {
-            return Optional.empty();
+            Show show = (Show) entityManager.createQuery("FROM Show s WHERE s.id = :id")
+                .setParameter("id", showId)
+                .getSingleResult();
+            return show;
+        } catch (NoResultException ex) {
+            throw new NoSuchEntityException();
         }
     }
 }
