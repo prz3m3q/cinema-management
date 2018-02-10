@@ -1,8 +1,7 @@
 package pl.com.bottega.cms.model.commands;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.text.DateFormatSymbols;
+import java.util.*;
 
 public interface Command {
 
@@ -32,15 +31,29 @@ public interface Command {
     }
 
     default void validatePresence(ValidationErrors errors, String field, Set value) {
-        if (value.size() == 0) {
+        if (value == null || value.size() == 0) {
             errors.add(field, "can't be empty");
         }
-        if (value.stream().anyMatch(v -> v.toString().trim().length() == 0)) {
-            errors.add(field, "can't be empty values");
+        try {
+            if (value != null && value.stream().anyMatch(v -> v.toString().trim().length() == 0)) {
+                errors.add(field, "can't be empty values");
+            }
+        } catch (NullPointerException ex) {
+            errors.add(field, "can't contain null values");
         }
     }
 
-    default void validatePresence(ValidationErrors errors, String fieldOne, Object valueOne, String fieldTwo, Object valueTwo) {
+    default void validateWeekdays(ValidationErrors errors, String field, Set value) {
+        if (value == null) {
+            errors.add(field, "can't be blank");
+        }
+        String[] weekdays = DateFormatSymbols.getInstance(Locale.US).getWeekdays();
+        if (value != null && !Arrays.stream(weekdays).anyMatch(day -> value.contains(day))) {
+            errors.add(field, "some name of weekday is wrong");
+        }
+    }
+
+    default void validatePresence(ValidationErrors errors, String fieldOne, Set valueOne, String fieldTwo, ShowsCalendar valueTwo) {
         if (valueOne == null && valueTwo == null) {
             errors.add(fieldOne, "can't be blank");
             errors.add(fieldTwo, "can't be blank");

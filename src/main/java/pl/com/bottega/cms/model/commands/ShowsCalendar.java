@@ -25,6 +25,22 @@ public class ShowsCalendar {
         return hours;
     }
 
+    public void setFromDate(LocalDateTime fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public void setUntilDate(LocalDateTime untilDate) {
+        this.untilDate = untilDate;
+    }
+
+    public void setWeekDays(Set<String> weekDays) {
+        this.weekDays = weekDays;
+    }
+
+    public void setHours(Set<LocalTime> hours) {
+        this.hours = hours;
+    }
+
     public boolean isWeekdaysContain(String dayOfWeekFromDate) {
         return this.weekDays.stream().anyMatch(weekday -> weekday.toUpperCase().equals(dayOfWeekFromDate.toUpperCase()));
     }

@@ -45,10 +45,21 @@ public class CreateShowsCommand implements Command {
         this.calendar = calendar;
     }
 
-    public void validate(ValidationErrors errors){
+    public void validate(ValidationErrors errors) {
         validatePresence(errors,"movieId", movieId);
         validatePresence(errors,"cinemaId", cinemaId);
         validatePresence(errors,"dates", dates, "calendar", calendar);
+        if (calendar != null) {
+            validatePresence(errors, "weekDays", calendar.getWeekDays());
+            validatePresence(errors, "hours", calendar.getHours());
+            validatePresence(errors, "weekDays", calendar.getWeekDays());
+            validateWeekdays(errors, "weekDays", calendar.getWeekDays());
+            validatePresence(errors, "fromDate", calendar.getFromDate());
+            validatePresence(errors, "untilDate", calendar.getUntilDate());
+        }
+        if (dates != null) {
+            validatePresence(errors, "dates", dates);
+        }
     }
 
     public LocalDate getFromDate() {
