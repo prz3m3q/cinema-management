@@ -7,6 +7,13 @@ public class ValidationErrors {
 
     private Map<String, String> errors = new HashMap<>();
 
+    public ValidationErrors(String field, String error) {
+        add(field, error);
+    }
+
+    public ValidationErrors() {
+    }
+
     public void add(String field, String error) {
         errors.put(field, error);
     }

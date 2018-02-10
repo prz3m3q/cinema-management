@@ -29,11 +29,16 @@ public class Reservation {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
+
     public Reservation(CreateReservationCommand cmd) {
         this.showId = cmd.getShowId();
         this.customer = cmd.getCustomer();
         this.seats = cmd.getSeats();
         this.tickets = cmd.getTickets();
+        this.status = ReservationStatus.PENDING;
     }
 
     public Reservation() {}
