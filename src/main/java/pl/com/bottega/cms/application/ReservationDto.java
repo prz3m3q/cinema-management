@@ -4,9 +4,17 @@ import pl.com.bottega.cms.model.Reservation;
 
 public class ReservationDto {
 
-    Long id;
+    Long reservationNumber;
 
     public ReservationDto(Reservation reservation) {
-        this.id = reservation.getId();
+        this.reservationNumber = reservation.getId();
+    }
+
+    public Long getReservationNumber() {
+        return reservationNumber;
+    }
+
+    public void setReservationNumber(Long reservationNumber) {
+        this.reservationNumber = reservationNumber;
     }
 }

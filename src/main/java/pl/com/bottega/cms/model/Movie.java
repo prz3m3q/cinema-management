@@ -1,13 +1,12 @@
 package pl.com.bottega.cms.model;
 
-import pl.com.bottega.cms.model.commands.CalculatePricesCommand;
-import pl.com.bottega.cms.model.commands.CreateMovieCommand;
-import pl.com.bottega.cms.model.commands.SetTicketPricesCommand;
+import pl.com.bottega.cms.model.commands.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Movie {
@@ -25,7 +24,6 @@ public class Movie {
         name ="ticket_prices",
         joinColumns =@JoinColumn(name="move_id")
     )
-
     private Map<String,BigDecimal> prices;
 
     @ElementCollection(
@@ -125,5 +123,12 @@ public class Movie {
 
     public void setPrices(Map<String, BigDecimal> prices) {
         this.prices = prices;
+    }
+
+    public void checkTicketPrices(CreateReservationCommand cmd) {
+        List<String> ticketKinds = cmd.getTickets().stream().map(ticket -> ticket.getKind()).collect(Collectors.toList());
+        if (ticketKinds.stream().anyMatch(kind -> !prices.containsKey(kind))) {
+            throw new CommandInvalidException(new ValidationErrors("tickets", "bad kind of ticket"));
+        }
     }
 }

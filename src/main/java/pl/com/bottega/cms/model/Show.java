@@ -2,6 +2,7 @@ package pl.com.bottega.cms.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import pl.com.bottega.cms.model.commands.CalculatePricesCommand;
+import pl.com.bottega.cms.model.commands.CreateReservationCommand;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -57,5 +58,9 @@ public class Show {
 
     public boolean isTakePlaceInDate(LocalDate date) {
         return this.getDate().toLocalDate().equals(date);
+    }
+
+    public void checkTicketPrices(CreateReservationCommand cmd) {
+        movie.checkTicketPrices(cmd);
     }
 }

@@ -21,6 +21,13 @@ public class Seat {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
+    public Seat(Integer row, Integer seat) {
+        this.row = row;
+        this.seat = seat;
+    }
+
+    public Seat() {}
+
     public Integer getRow() {
         int returnedRow = row;
         return --returnedRow;
@@ -29,5 +36,13 @@ public class Seat {
     public Integer getSeat() {
         int returnedSeat = seat;
         return --returnedSeat;
+    }
+
+    public void setRow(Integer row) {
+        this.row = row;
+    }
+
+    public void setSeat(Integer seat) {
+        this.seat = seat;
     }
 }

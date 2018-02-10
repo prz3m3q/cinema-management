@@ -21,6 +21,14 @@ public class Ticket {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
+    public Ticket(String kind, int count) {
+        this.kind = kind;
+        this.count = count;
+    }
+
+    public Ticket() {
+    }
+
     public String getKind() {
         return kind;
     }

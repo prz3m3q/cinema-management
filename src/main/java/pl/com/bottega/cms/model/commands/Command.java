@@ -1,5 +1,8 @@
 package pl.com.bottega.cms.model.commands;
 
+import pl.com.bottega.cms.model.Cinema;
+import pl.com.bottega.cms.model.CinemaHall;
+import pl.com.bottega.cms.model.Seat;
 import pl.com.bottega.cms.model.Ticket;
 
 import java.text.DateFormatSymbols;
@@ -53,6 +56,32 @@ public interface Command {
         try {
             if (value != null && value.stream().anyMatch(v -> v.toString().trim().length() == 0)) {
                 errors.add(field, "can't be empty values");
+            }
+        } catch (NullPointerException ex) {
+            errors.add(field, "can't contain null values");
+        }
+    }
+
+    default void validateSeats(ValidationErrors errors, String field, Set<Seat> value) {
+        if (value == null || value.size() == 0) {
+            errors.add(field, "can't be empty");
+        }
+        try {
+            if (value != null && value.stream().anyMatch(seat -> (seat.getSeat() < 0 || seat.getRow() < 0))) {
+                errors.add(field, "seats and rows must be greater than zero");
+            }
+            if (value != null && value.stream().anyMatch(seat -> (seat.getSeat() >= CinemaHall.SEATS || seat.getRow() >= CinemaHall.ROWS))) {
+                errors.add(field, "bad number of seat or row");
+            }
+        } catch (NullPointerException ex) {
+            errors.add(field, "can't contain null values");
+        }
+    }
+
+    default void validateTicketAmount(ValidationErrors errors, String field, Set<Ticket> value) {
+        try {
+            if (value != null && value.stream().anyMatch(ticket -> ticket.getCount() <= 0)) {
+                errors.add(field, "count must be greater than zero");
             }
         } catch (NullPointerException ex) {
             errors.add(field, "can't contain null values");

@@ -26,6 +26,13 @@ public class AcceptanceTest {
             em.createNativeQuery("DELETE FROM movie_genres").executeUpdate();
             em.createNativeQuery("DELETE FROM shows").executeUpdate();
             em.createNativeQuery("TRUNCATE shows").executeUpdate();
+            em.createNativeQuery("DELETE FROM reservation").executeUpdate();
+            em.createNativeQuery("TRUNCATE reservation").executeUpdate();
+            em.createNativeQuery("DELETE FROM ticket").executeUpdate();
+            em.createNativeQuery("TRUNCATE ticket").executeUpdate();
+            em.createNativeQuery("DELETE FROM seat").executeUpdate();
+            em.createNativeQuery("TRUNCATE seat").executeUpdate();
+            em.createNativeQuery("DELETE FROM ticket_prices").executeUpdate();
             return null;
         });
     }

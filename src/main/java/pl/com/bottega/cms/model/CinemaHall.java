@@ -1,6 +1,8 @@
 package pl.com.bottega.cms.model;
 
+import pl.com.bottega.cms.model.commands.CommandInvalidException;
 import pl.com.bottega.cms.model.commands.CreateReservationCommand;
+import pl.com.bottega.cms.model.commands.ValidationErrors;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,92 +14,90 @@ public class CinemaHall {
     public static final int ROWS = 10;
     public static final int SEATS = 15;
 
-    boolean[][] seats;
-    int[][] free;
-    int maxSeatsNumber;
+    boolean[][] seats = new boolean[ROWS][SEATS];
 
     public CinemaHall(Set<Reservation> currentReservations) {
-        this.seats = new boolean[ROWS][SEATS];
-        this.free = new int[ROWS][SEATS];
-        for (Reservation reservation : currentReservations) {
-            for (Seat seat : reservation.getSeats()) {
-                seats[seat.getRow()][seat.getSeat()] = true;
-            }
-        }
-        checkFree();
+        currentReservations.stream().forEach(reservation -> markAsTaken(reservation));
     }
 
-    public boolean checkReservation(CreateReservationCommand cmd) {
-        if (!isSeatsAvailable(cmd)) {
-            return false;
-        }
-        if (cmd.getSeats().stream().count() > maxSeatsNumber) {
-            return true;
-        }
-        if (!isTheSameRows(cmd)) {
-            return false;
-        }
-        if (!isUniqueSetsNumbers(cmd)) {
-            return false;
-        }
-        Seat prev = null;
-        List<Seat> sortedSeats = getSortedSeats(cmd);
-        for (Seat seat : sortedSeats) {
-            if (free[seat.getRow()][seat.getSeat()] > sortedSeats.stream().count()) {
-                return false;
-            }
-            if (prev != null && (prev.getSeat() + 1) != seat.getSeat()) {
-                return false;
-            }
-            prev = seat;
-        }
+    private void markAsTaken(Reservation reservation) {
+        reservation.getSeats().forEach(seat -> seats[seat.getRow()][seat.getSeat()] = true);
+    }
 
-        return true;
+    public void checkReservation(CreateReservationCommand cmd) {
+        if (!isSeatsAvailable(cmd)) {
+            throw new CommandInvalidException(
+                new ValidationErrors("seats", "seats are unavailable")
+            );
+        }
+        if (isDiffrentSizeSeatsAndTickets(cmd)) {
+            throw new CommandInvalidException(
+                new ValidationErrors("seats", "amount of count tickets and amount of seats must be the same")
+            );
+        }
+        if (isPossibleToPlaceCorrectly(cmd)) {
+            if (!isTheSameRows(cmd)) {
+                throw new CommandInvalidException(
+                    new ValidationErrors("seats", "seats are not in the same row")
+                );
+            }
+            if (cmd.getSeats().size() != differenceMaxMinSeat(cmd)) {
+                throw new CommandInvalidException(
+                    new ValidationErrors("seats", "every seat must be reserved next to another")
+                );
+            }
+        }
+        if (isTooManySeats(cmd)) {
+            throw new CommandInvalidException(
+                new ValidationErrors("seats", "too many seats reservations")
+            );
+        }
+    }
+
+    private boolean isDiffrentSizeSeatsAndTickets(CreateReservationCommand cmd) {
+        int numberOfSeats = cmd.getSeats().size();
+        int numberOfCountTickets = cmd.getTickets().stream().mapToInt(ticket -> ticket.getCount()).sum();
+        return numberOfCountTickets != numberOfSeats;
+    }
+
+    private boolean isTooManySeats(CreateReservationCommand cmd) {
+        return (ROWS * SEATS) < cmd.getSeats().size();
+    }
+
+    private int differenceMaxMinSeat(CreateReservationCommand cmd) {
+        Seat maxSeat = cmd.getSeats().stream().max((s1, s2) -> Integer.compare(s1.getSeat(), s2.getSeat())).get();
+        Seat minSeat = cmd.getSeats().stream().min((s1, s2) -> Integer.compare(s1.getSeat(), s2.getSeat())).get();
+        return maxSeat.getSeat() - minSeat.getSeat() + 1;
     }
 
     private boolean isTheSameRows(CreateReservationCommand cmd) {
         return new HashSet<Integer>(cmd.getSeats().stream().map(s -> s.getRow()).collect(Collectors.toSet())).size() == 1;
     }
 
-    private boolean isUniqueSetsNumbers(CreateReservationCommand cmd) {
-        return new HashSet<Integer>(cmd.getSeats().stream().map(s -> s.getSeat()).collect(Collectors.toSet())).size() == cmd.getSeats().stream().count();
-    }
-
     private boolean isSeatsAvailable(CreateReservationCommand cmd) {
-        for (Seat seat : cmd.getSeats()) {
-            if (seats[seat.getRow()][seat.getSeat()]) {
-                return false;
-            }
-        }
-        return true;
+        return cmd.getSeats().stream().noneMatch(seat -> seats[seat.getRow()][seat.getSeat()]);
     }
 
-    private void checkFree() {
-        int rowNumber = 0;
+    public boolean isPossibleToPlaceCorrectly(CreateReservationCommand command) {
+        Integer persons = command.getSeats().size();
+        Integer counter;
+        if (persons > SEATS) {
+            return false;
+        }
         for (boolean[] row : seats) {
-            for (int seatNumber = row.length-1; seatNumber >= 0; seatNumber--) {
-                if (!row[seatNumber]) {
-                    free[rowNumber][seatNumber] = 0;
-                    continue;
+            counter = 0;
+            for (boolean seat : row) {
+                if (!seat) {
+                    counter++;
+                } else {
+                    counter = 0;
                 }
-                if (row[seatNumber] && seatNumber < row.length-1) {
-                    free[rowNumber][seatNumber] = free[rowNumber][seatNumber+1] + 1;
-                    if (maxSeatsNumber < free[rowNumber][seatNumber]) {
-                        maxSeatsNumber = free[rowNumber][seatNumber];
-                    }
-                    continue;
-                }
-                if (row[seatNumber] && seatNumber == row.length) {
-                    free[rowNumber][seatNumber] = 1;
-                    continue;
-                }
-                free[rowNumber][seatNumber] = 0;
-            }
-            rowNumber++;
-        }
-    }
 
-    public List<Seat> getSortedSeats(CreateReservationCommand cmd) {
-        return cmd.getSeats().stream().sorted((e1, e2) -> e1.getSeat().compareTo(e2.getSeat())).collect(Collectors.toList());
+                if (counter >= persons) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.com.bottega.cms.application.CommandGateway;
+import pl.com.bottega.cms.application.ReservationDto;
 import pl.com.bottega.cms.model.commands.CreateReservationCommand;
 import pl.com.bottega.cms.model.Receipt;
 import pl.com.bottega.cms.model.commands.CalculatePricesCommand;
@@ -19,12 +20,7 @@ public class ReservationController {
     }
 
     @PutMapping("/reservations")
-    public void create(@RequestBody CreateReservationCommand cmd) {
-        gateway.execute(cmd);
+    public ReservationDto create(@RequestBody CreateReservationCommand cmd) {
+        return gateway.execute(cmd);
     }
-
-//    @PostMapping("/price_calculator")
-//    public Receipt calcuatePrieces(@RequestBody CalculatePricesCommand cmd){
-//        return gateway.execute(cmd);
-//    }
 }
