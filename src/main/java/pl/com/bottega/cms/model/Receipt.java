@@ -7,9 +7,9 @@ import java.util.Set;
 
 public class Receipt {
 
-    BigDecimal totalPrice;
-
     Set<ReceiptLine> tickets;
+
+    BigDecimal totalPrice;
 
     public BigDecimal getTotalPrice() {
         return totalPrice;

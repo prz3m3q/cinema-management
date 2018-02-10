@@ -1,5 +1,7 @@
 package pl.com.bottega.cms.model;
 
+import pl.com.bottega.cms.infrastructure.IncorrectTicketException;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -46,6 +48,9 @@ public class Ticket {
     }
 
     public BigDecimal getPrice(Map<String,BigDecimal> prices) {
+        BigDecimal ticketPrice = prices.get(this.kind);
+        if(ticketPrice == null)
+            throw new IncorrectTicketException();
         return prices.get(this.kind).multiply(BigDecimal.valueOf(this.count));
     }
 

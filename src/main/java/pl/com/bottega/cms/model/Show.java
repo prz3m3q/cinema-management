@@ -39,7 +39,7 @@ public class Show {
         this.date = date;
     }
 
-    Receipt calculate(CalculatePricesCommand cmd){
+    public Receipt calculate(CalculatePricesCommand cmd){
         return this.movie.calculate(cmd);
     }
 

@@ -23,8 +23,8 @@ public class ReservationController {
         gateway.execute(cmd);
     }
 
-//    @PostMapping("/price_calculator")
-//    public Receipt calcuatePrieces(@RequestBody CalculatePricesCommand cmd){
-//        return gateway.execute(cmd);
-//    }
+    @PostMapping("/price_calculator")
+    public Receipt calcuatePrieces(@RequestBody CalculatePricesCommand cmd){
+         return gateway.execute(cmd);
+    }
 }

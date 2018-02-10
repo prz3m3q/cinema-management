@@ -1,13 +1,21 @@
 package pl.com.bottega.cms.model.commands;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import pl.com.bottega.cms.model.Ticket;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public interface Command {
 
     default void validate(ValidationErrors validationErrors) {
 
+    }
+
+    default void validateDuplicatte(ValidationErrors errors,String field, List<String> listKind ){
+        List<String> testListKind;
+        testListKind = listKind.stream().distinct().collect(Collectors.toList());
+        if(testListKind.size() != listKind.size())
+        errors.add(field,"Can not be duplicate in tisket");
     }
 
     default void validatePresence(ValidationErrors errors, String field, String value) {

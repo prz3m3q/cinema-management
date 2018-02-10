@@ -44,13 +44,11 @@ public class CreateCinemaHandlerTest {
         CreateCinemaCommand command = new CreateCinemaCommand();
         command.setName("name");
         command.setCity("city");
-
         //when
         when(cinemaRepository.isOccupied(command)).thenReturn(false);
         cinemaHandler.handle(command);
-
         //then
-//        verify(cinemaRepository).save(cinema);
+//       verify(cinemaRepository).save(cinema);
     }
 
     @Test
