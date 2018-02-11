@@ -153,6 +153,29 @@ public class CreateReservationTest extends AcceptanceTest {
         commandGateway.execute(createReservationCommand);
     }
 
+    @Test(expected = CommandInvalidException.class)
+    public void shouldNotCreateReservationWithDuplicateTickets() {
+        CreateReservationCommand createReservationCommand = getDefaultCmd();
+
+        Set<Ticket> tickets = new HashSet<>();
+        tickets.add(new Ticket("jeden", 1));
+        tickets.add(new Ticket("dwa", 1));
+        tickets.add(new Ticket("jeden", 1));
+
+        createReservationCommand.setTickets(tickets);
+        commandGateway.execute(createReservationCommand);
+    }
+
+    @Test(expected = CommandInvalidException.class)
+    public void shouldNotCreateReservationWithEmptyCustomer() {
+        CreateReservationCommand createReservationCommand = getDefaultCmd();
+
+        Customer customer = new Customer();
+
+        createReservationCommand.setCustomer(customer);
+        commandGateway.execute(createReservationCommand);
+    }
+
     private CreateReservationCommand getDefaultCmd() {
         createMovie();
         createCinema();

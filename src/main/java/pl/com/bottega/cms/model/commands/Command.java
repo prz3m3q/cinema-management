@@ -23,11 +23,11 @@ public interface Command {
 
     }
 
-    default void validateDuplicatte(ValidationErrors errors,String field, List<String> listKind ){
+    default void validateDuplicatte(ValidationErrors errors, String field, List<String> list) {
         List<String> testListKind;
-        testListKind = listKind.stream().distinct().collect(Collectors.toList());
-        if(testListKind.size() != listKind.size())
-        errors.add(field,"Can not be duplicate in tisket");
+        testListKind = list.stream().distinct().collect(Collectors.toList());
+        if(testListKind.size() != list.size())
+        errors.add(field, "Can not be duplicate");
     }
 
     default void validatePresence(ValidationErrors errors, String field, String value) {
@@ -43,11 +43,15 @@ public interface Command {
     }
 
     default void validateEmail(ValidationErrors errors, String field, String value) {
-        String regex = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(value);
-        if (!matcher.matches()) {
-            errors.add(field, "wrong email format");
+        if (value == null) {
+            errors.add(field, "can't be blank");
+        } else {
+            String regex = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(value);
+            if (!matcher.matches()) {
+                errors.add(field, "wrong email format");
+            }
         }
     }
 
@@ -73,31 +77,6 @@ public interface Command {
         }
     }
 
-    default void validateSeats(ValidationErrors errors, String field, Set<Seat> value) {
-        if (value == null || value.size() == 0) {
-            errors.add(field, "can't be empty");
-        }
-        try {
-            if (value != null && value.stream().anyMatch(seat -> (seat.getSeat() < 0 || seat.getRow() < 0))) {
-                errors.add(field, "seats and rows must be greater than zero");
-            }
-            if (value != null && value.stream().anyMatch(seat -> (seat.getSeat() >= CinemaHall.SEATS || seat.getRow() >= CinemaHall.ROWS))) {
-                errors.add(field, "bad number of seat or row");
-            }
-        } catch (NullPointerException ex) {
-            errors.add(field, "can't contain null values");
-        }
-    }
-
-    default void validateTicketAmount(ValidationErrors errors, String field, Set<Ticket> value) {
-        try {
-            if (value != null && value.stream().anyMatch(ticket -> ticket.getCount() <= 0)) {
-                errors.add(field, "count must be greater than zero");
-            }
-        } catch (NullPointerException ex) {
-            errors.add(field, "can't contain null values");
-        }
-    }
 
     default void validateWeekdays(ValidationErrors errors, String field, Set value) {
         if (value == null) {
@@ -106,16 +85,6 @@ public interface Command {
         String[] weekdays = DateFormatSymbols.getInstance(Locale.US).getWeekdays();
         if (value != null && value.stream().anyMatch(day -> !Arrays.asList(weekdays).contains(day))) {
             errors.add(field, "some name of weekday is wrong");
-        }
-    }
-
-    default void validateUniqueTicketsKind(ValidationErrors errors, String field, Set<Ticket> value) {
-        if (value == null) {
-            errors.add(field, "can't be blank");
-        }
-        List<String> unique = value.stream().map(ticket -> ticket.getKind()).collect(Collectors.toList());
-        if (value != null && value.size() != unique.size()) {
-            errors.add(field, "tickets is not unique");
         }
     }
 
