@@ -17,22 +17,37 @@ public class CalculatePricesCommand implements Command {
 
     @Override
     public void validate(ValidationErrors errors) {
-        validatePresence(errors,"showId",showId);
-        validatePresence(errors, "Tickets", tickets);
-
-        listKind = tickets.stream().map(ticket -> ticket.getKind()).collect(Collectors.toList());
-        validateDuplicatte(errors,"Ticket Kind",listKind);
-
-        for( Ticket ticket : tickets) {
-
-            if (ticket.getKind().isEmpty() || ticket.getKind() == null)
-                errors.add("Ticket", "can not be empty");
-
-            if(ticket.getCount() <= 0)
-                errors.add("Count","can not be 0 and must be positive");
-        }
+        validatePresence(errors,"showId", showId);
+        validateTicketPrices(errors, "tickets", tickets);
     }
 
+    public void validateTicketPrices(ValidationErrors errors, String field, Set value) {
+        if (value == null || value.size() == 0) {
+            errors.add(field, "can't be empty");
+        }
+        try {
+            if (value != null && value.stream().anyMatch(v -> v.toString().trim().length() == 0)) {
+                errors.add(field, "can't be empty values");
+            }
+            for (Ticket ticket : tickets) {
+                if (ticket.getKind() != null && ticket.getKind().isEmpty()) {
+                    errors.add("Ticket", "can not be empty");
+                }
+
+                if (ticket.getKind() == null) {
+                    errors.add("Ticket", "can not be null");
+                }
+
+                if (ticket.getCount() <= 0) {
+                    errors.add("Count","can not be 0 and must be positive");
+                }
+            }
+            listKind = tickets.stream().map(ticket -> ticket.getKind()).collect(Collectors.toList());
+            validateDuplicatte(errors,"Ticket Kind",listKind);
+        } catch (NullPointerException ex) {
+            errors.add(field, "can't contain null values");
+        }
+    }
 
     public Long getShowId() {
         return showId;
