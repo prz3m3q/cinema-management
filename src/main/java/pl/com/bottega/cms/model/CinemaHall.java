@@ -20,6 +20,10 @@ public class CinemaHall {
         currentReservations.stream().forEach(reservation -> markAsTaken(reservation));
     }
 
+    public boolean[][] getSeats() {
+        return seats;
+    }
+
     private void markAsTaken(Reservation reservation) {
         reservation.getSeats().forEach(seat -> seats[seat.getRow()][seat.getSeat()] = true);
     }
@@ -99,5 +103,9 @@ public class CinemaHall {
             }
         }
         return false;
+    }
+
+    public boolean isOccupied(int row, int seat) {
+        return seats[row][seat];
     }
 }

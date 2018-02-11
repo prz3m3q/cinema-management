@@ -38,6 +38,14 @@ public class Seat {
         return --returnedSeat;
     }
 
+    public Integer getRowToShow() {
+        return row;
+    }
+
+    public Integer getSeatToShow() {
+        return seat;
+    }
+
     public void setRow(Integer row) {
         this.row = row;
     }

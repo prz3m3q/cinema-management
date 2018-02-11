@@ -4,6 +4,10 @@ package pl.com.bottega.cms.infrastructure;
         import pl.com.bottega.cms.application.CinemaDto;
         import pl.com.bottega.cms.application.CinemaFinder;
         import pl.com.bottega.cms.application.CinemaHallDto;
+        import pl.com.bottega.cms.model.CinemaHall;
+        import pl.com.bottega.cms.model.Reservation;
+        import pl.com.bottega.cms.model.repositories.ReservationRepository;
+        import pl.com.bottega.cms.model.repositories.ShowRepository;
 
         import javax.persistence.EntityManager;
         import java.util.List;
@@ -12,22 +16,28 @@ package pl.com.bottega.cms.infrastructure;
 @Component
 public class JPACinemaFinder implements CinemaFinder {
 
-    public JPACinemaFinder(EntityManager entityManager) {
+    public JPACinemaFinder(EntityManager entityManager, ReservationRepository reservationRepository, ShowRepository showRepository) {
         this.entityManager = entityManager;
+        this.reservationRepository = reservationRepository;
+        this.showRepository = showRepository;
     }
 
     private EntityManager entityManager;
+
+    private ReservationRepository reservationRepository;
+
+    private ShowRepository showRepository;
 
     public List<CinemaDto> getAll() {
         List<CinemaDto> resultList= entityManager.createQuery("SELECT NEW pl.com.bottega.cms.application.CinemaDto(c.id, c.name,c.city) FROM Cinema c").getResultList();
         return resultList;
     }
 
-    CinemaHallDto getSeats(Long showId){
-        CinemaHallDto cinemaHallDto =(CinemaHallDto) entityManager.createQuery("SELECT NEW pl.com.bottega.cms.application.CinemaHallDto(s.free, s.occupied) " +
-                "FROM Seat s").getParameters();
+    public CinemaHallDto getSeats(Long showId) {
+        showRepository.getShow(showId);
+        Set<Reservation> currentReservations = reservationRepository.getReservations(showId);
+        CinemaHall cinemaHall = new CinemaHall(currentReservations);
+        CinemaHallDto cinemaHallDto = new CinemaHallDto(cinemaHall);
         return cinemaHallDto;
     }
-
-
 }
