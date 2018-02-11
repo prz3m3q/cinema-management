@@ -14,15 +14,18 @@ public class SetTicketPricesCommand implements Command {
 
 
         for (Map.Entry<String,BigDecimal> entry : prices.entrySet()){
-            if(entry.getValue() == null || entry.getValue().compareTo(BigDecimal.ZERO) == -1)
-            errors.add("prices", "Prices must be positive");
+            if(entry.getValue() == null)
+                errors.add(entry.getKey(), "Can not be null");
+
+            if(entry.getValue() != null && entry.getValue().compareTo(BigDecimal.ZERO) == -1)
+                errors.add(entry.getKey(), "Prices must be positive");
         }
 
             if(prices!= null && !( prices.containsKey("regular") ))
-            errors.add("prices", "Must be regular ticket");
+            errors.add("Regular", "Must be regular ticket");
 
             if(prices != null && !( prices.containsKey("student") ))
-            errors.add("prices", "Must be student ticket");
+            errors.add("Student", "Must be student ticket");
 
 
         for (Map.Entry<String,BigDecimal> entry : prices.entrySet()){
