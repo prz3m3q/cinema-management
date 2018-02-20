@@ -1,6 +1,5 @@
 package pl.com.bottega.cms.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import pl.com.bottega.cms.model.commands.CreateReservationCommand;
 
 import javax.persistence.*;
@@ -53,5 +52,9 @@ public class Reservation {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getShowId() {
+        return showId;
     }
 }

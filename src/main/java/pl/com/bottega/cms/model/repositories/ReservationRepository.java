@@ -7,4 +7,5 @@ import java.util.Set;
 public interface ReservationRepository {
     void save(Reservation reservation);
     Set<Reservation> getReservations(Long showId);
+    Reservation get(Long resevationId);
 }

@@ -38,6 +38,10 @@ public class Seat {
         return --returnedSeat;
     }
 
+    public Reservation getReservation() {
+        return reservation;
+    }
+
     public Integer getRowToShow() {
         return row;
     }

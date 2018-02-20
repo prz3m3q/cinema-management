@@ -31,4 +31,13 @@ public class JPAReservationRepository implements ReservationRepository {
 
         return reservationList.stream().collect(Collectors.toSet());
     }
+
+    @Override
+    public Reservation get(Long resevationId) {
+        Reservation reservation = (Reservation) entityManager.createQuery("SELECT r FROM Reservation r WHERE r.id = :id")
+            .setParameter("id", resevationId)
+            .getSingleResult();
+
+        return reservation;
+    }
 }
